@@ -1,66 +1,104 @@
-# Lesa
+# 📚 Lesa – Architecture & Design Decisions
 
-## Getting Started 🚀
+> **Context** – This is my decisions and rough guide to _Lesa Flutter Dev Test_ app. It explains **why** the codebase looks the way it does, the architectural choices I made, and how it works as a whole. First of all, probably most important decision I made was to use my template when creating the project (only partly for what I needed, or felt would be beneficial for the project), since I noticed I needed to recreate some of the elements to write good and well structured code.
 
-This project contains 3 flavors:
+---
 
-- development
-- staging
-- production
+## 1 High‑level overview
 
-To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
+```mermaid
+flowchart TD
+  subgraph Runtime Entrypoints
+    A1[main_development.dart] --> APP
+    A2[main_staging.dart] --> APP
+    A3[main_production.dart] --> APP
+    A4[main.dart] --> APP
+  end
 
-```sh
-# Development
-$ flutter run --flavor development --target lib/main_development.dart
+  APP[App (MaterialApp)] -->|router| ROUTER[LesaRouter]
+  APP -->|theme / localization| CORE[core/]
+  ROUTER -->|"/"| FEATURE[NarratedReading Feature]
 
-# Staging
-$ flutter run --flavor staging --target lib/main_staging.dart
+  subgraph " "
+    CORE --> SERVICES[Services]
+    CORE --> CANDY[Candy Tools]
+    CORE --> L10N[Localization]
+    CORE --> EXT[Extensions]
+  end
 
-# Production
-$ flutter run --flavor production --target lib/main_production.dart
+  FEATURE --> UI[UI layer]
+  FEATURE --> LOGIC[Bloc layer]
+  FEATURE --> REPO[Repository layer]
+  REPO --> MODELS[Models]
+  SERVICES -->|DI| SL[Service Locator]
 ```
 
-\_\*Lesa works on iOS, Android
+- **Feature‑based MVVM/MV*O*** – In the project I used one of the architectures provided by the official [Flutter app architecture docs](https://docs.flutter.dev/app-architecture) but with little tweaks. Each _feature_ owns its UI widgets, blocs, repositories and models.
+- **Template baseline** – I bootstrap new projects with a personal template that already provides environment handling, theming, localisation, DI and helpful helpers (check `core/`, `app/` directories of the app), so it cuts about month of setups, this way we can just straight into writing the business logic related code.
 
-## Working with Translations 🌐
+---
 
-### Adding Strings
+## 2 Folder structure (abridged)
 
-1. To add a new localizable string, open the `app_en.arb` file at `lib/core/l10n/arb/app_en.arb`.
+| Path                    | Responsibility                                                                     |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| `src/app/`              | **Global App Related Configurations**: global blocs, router, env bootstrap, theme. |
+| `src/core/`             | **Reusable utilities** – service‑locator, logger, candy tools, localisation, etc.  |
+| `src/narrated_reading/` | **Business feature** delivered for the test. │                                     |
+|   `bloc/`               | Cubits (`BookCubit`, `AudioControllerCubit`).                                      |
+|   `models/`             | Immutable models (`BookData`, `BookPageData`).                                     |
+|   `repositories/`       | Data layer – currently local JSON, swappable for remote.                           |
+|   `ui/`                 | Pages & reusable widgets, folder for building ui of the feature                    |
 
-```arb
-{
-    "@@locale": "en",
-    "continue": "Continue",
-    "@continue": {
-        "description": "default continue text prompting user to continue some process"
-    }
-}
+> **Scalability** – New games/chapters will be added next to `narrated_reading/` as their own feature folders.
+
+---
+
+## 3 Data flow inside a feature
+
+```mermaid
+sequenceDiagram
+  participant UI as Widget
+  participant Bloc as Bloc/Cubit
+  participant Repo as Repository
+  participant Model as Data Model
+  UI->>Bloc: user intent (e.g. nextPage())
+  Bloc->>Repo: fetch/update data
+  Repo-->>Bloc: model(s) / failure
+  Bloc-->>UI: new state (immutable)
 ```
 
-after adding new in the default template arb file, you can add translations in other localization files as well.
+- **Unidirectional flow** keeps side‑effects inside `Bloc`/`Repository`. Widgets are stateless and easy to test.
+- **Service‑locator (GetIt)** is injected where needed, but feature code can also be constructor‑injected (easier for testing),
+  but not needed at the early stages of the project ().
 
-### Generating Translations
+---
 
-To use the latest translations arb file changes, you will need to generate them.
-Generate localizations for the current project with:
+## 4 Key decisions
 
-```sh
-flutter gen-l10n
+| Area               | Decision                                                      | Rationale                                                                                                        |
+| ------------------ | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Project layout     | **Feature‑based** (vs layer‑based)                            | A Duolingo like app will have of games, chapters, etc. For organizational purposes chosen to prioritize features |
+| Ui Kit             | **Separate package**                                          | Usually better to separately, so we have better separation of concerns. Also can be developed independently      |
+| State management   | **Bloc/Cubit**                                                | Familiar to most Flutter teams, excellent dev tools, predictable streams, easy to generate                       |
+| Audio              | **Per‑page audio files**                                      | Added simple audio files for each page, just tried to guess the logic, hope it works for test assignment         |
+| Localisation       | **ARB + generated localizations** in `core/l10n/`             | Production ready. can be extended to Icelandic easily.                                                           |
+| Environment config | `.env` files via my template (`Environment.development` etc.) | Allows staging & production builds from the start.                                                               |
+| Code‑gen helpers   | Simple **Python scripts** (export fixer, audio TTS generator) | Speeds up repetitive chores, kept outside Flutter tree.                                                          |
+
+---
+
+For script usage guide check out: [`scripts/info.md`](scripts/info.md)
+
+## 6 Running the demo
+
+```bash
+flutter pub get
+flutter run --flavor development --target lib/main_development.dart
 ```
 
-### Using Localizations
+Ensure your device/emulator has audio enabled so you can hear the narrated pages when played.
 
-```dart
-import 'package:lesa/src/src.dart';
+---
 
-@override
-Widget build(BuildContext context) {
-  final localizations = context.lesaLocalizations;
-  return Text(localizations.helloWorld);
-}
-```
-
-[flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
-[internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+### Thanks! 🙌
