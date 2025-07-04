@@ -1,0 +1,18 @@
+{
+  "@@locale": "en",
+  "corruptedBookFiles": "Corrupted book files",
+  "@corruptedBookFiles": {},
+  "unexpectedError": "Unexpected error",
+  "@unexpectedError": {},
+  "pageOf": "Page {currentPageIndex} of {totalPagesCount}",
+  "@pageOf": {
+    "placeholders": {
+      "currentPageIndex": {},
+      "totalPagesCount": {}
+    }
+  },
+  "previousPage": "Previous page",
+  "@previousPage": {},
+  "nextPage": "Next page",
+  "@nextPage": {}
+}

@@ -1,0 +1,18 @@
+{
+  "@@locale": "is",
+  "corruptedBookFiles": "Spilltar bókaskrár",
+  "@corruptedBookFiles": {},
+  "unexpectedError": "Óvænt villa",
+  "@unexpectedError": {},
+  "pageOf": "Bls. {currentPageIndex} af {totalPagesCount}",
+  "@pageOf": {
+    "placeholders": {
+      "currentPageIndex": {},
+      "totalPagesCount": {}
+    }
+  },
+  "previousPage": "Fyrri síða",
+  "@previousPage": {},
+  "nextPage": "Næsta síða",
+  "@nextPage": {}
+}

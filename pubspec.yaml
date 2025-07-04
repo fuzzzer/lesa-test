@@ -1,0 +1,44 @@
+name: lesa
+description: "Gambling Platform"
+publish_to: none
+
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+
+dependencies:
+  audioplayers: 6.4.0
+  bloc: 9.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: 9.1.0
+  flutter_dotenv: 5.1.0
+  flutter_localizations:
+    sdk: flutter
+  get_it: 8.0.0
+  go_router: 15.1.1
+  intl: 0.20.2
+  logger: 2.4.0
+  package_info_plus: 8.3.0
+  path_provider: 2.0.12
+  shared_preferences: 2.3.2
+  ui_kit:
+    path: packages/ui_kit
+
+dev_dependencies:
+  bloc_test: 10.0.0
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: 5.1.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - env/
+    - assets/images/
+    - assets/books/en/
+    - assets/books/en/audio/
+    - assets/books/is/
+    - assets/books/is/audio/
