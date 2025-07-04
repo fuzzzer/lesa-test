@@ -21,7 +21,7 @@ flowchart TD
 
   subgraph " "
     CORE --> SERVICES[Services]
-    CORE --> L10N[Localisation]
+    CORE --> L10N[Localization]
     CORE --> EXT[Extensions]
   end
 
@@ -32,7 +32,7 @@ flowchart TD
 ```
 
 - **Feature‑based MVVM/MV*O*** – In the project I used one of the architectures provided by the official [Flutter app architecture docs](https://docs.flutter.dev/app-architecture) but with little tweaks. Each _feature_ owns its UI widgets, blocs, repositories and models.
-- **Template baseline** – I bootstrap new projects with a personal template that already provides environment handling, theming, localisation, DI and helpful helpers (check `core/`, `app/` directories of the app), so it cuts about month of setups, this way we can just straight into writing the business logic related code.
+- **Template baseline** – I bootstrap new projects with a personal template that already provides environment handling, theming, localization, DI and helpful helpers (check `core/`, `app/` directories of the app), so it cuts about month of setups, this way we can just straight into writing the business logic related code.
 
 ---
 
@@ -41,7 +41,7 @@ flowchart TD
 | Path                    | Responsibility                                                                     |
 | ----------------------- | ---------------------------------------------------------------------------------- |
 | `src/app/`              | **Global App Related Configurations**: global blocs, router, env bootstrap, theme. |
-| `src/core/`             | **Reusable utilities** – service‑locator, logger, candy tools, localisation, etc.  |
+| `src/core/`             | **Reusable utilities** – service‑locator, logger, candy tools, localization, etc.  |
 | `src/narrated_reading/` | **Business feature** delivered for the test. │                                     |
 |   `bloc/`               | Cubits (`BookCubit`, `AudioControllerCubit`).                                      |
 |   `models/`             | Immutable models (`BookData`, `BookPageData`).                                     |
@@ -80,7 +80,7 @@ sequenceDiagram
 | Ui Kit             | **Separate package**                                          | Usually better to separately, so we have better separation of concerns. Also can be developed independently      |
 | State management   | **Bloc/Cubit**                                                | Familiar to most Flutter teams, excellent dev tools, predictable streams, easy to generate                       |
 | Audio              | **Per‑page audio files**                                      | Added simple audio files for each page, just tried to guess the logic, hope it works for test assignment         |
-| Localisation       | **ARB + generated localizations** in `core/l10n/`             | Production ready. can be extended to Icelandic easily.                                                           |
+| Localization       | **ARB + generated localizations** in `core/l10n/`             | Production ready. can be extended to Icelandic easily.                                                           |
 | Environment config | `.env` files via my template (`Environment.development` etc.) | Allows staging & production builds from the start.                                                               |
 | Code‑gen helpers   | Simple **Python scripts** (export fixer, audio TTS generator) | Speeds up repetitive chores, kept outside Flutter tree.                                                          |
 
