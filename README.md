@@ -60,7 +60,7 @@ sequenceDiagram
   participant Bloc as Bloc/Cubit
   participant Repo as Repository
   participant Model as Data Model
-  UI->>Bloc: user intent (e.g. nextPage())
+  UI->>Bloc: user intent (e.g. getBook())
   Bloc->>Repo: fetch/update data
   Repo-->>Bloc: model(s) / failure
   Bloc-->>UI: new state (immutable)
