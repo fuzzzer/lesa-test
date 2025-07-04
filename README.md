@@ -8,7 +8,7 @@
 
 ```mermaid
 flowchart TD
-  subgraph Runtime Entrypoints
+  subgraph "Runtime Entrypoints"
     A1[main_development.dart] --> APP
     A2[main_staging.dart] --> APP
     A3[main_production.dart] --> APP
@@ -19,9 +19,9 @@ flowchart TD
   APP -->|theme / localization| CORE[core/]
   ROUTER -->|"/"| FEATURE[NarratedReading Feature]
 
-  subgraph " "
+  subgraph "CoreModules"
     CORE --> SERVICES[Services]
-    CORE --> CANDY[Candy Tools]
+    CORE --> CANDY[Candy Tools]
     CORE --> L10N[Localization]
     CORE --> EXT[Extensions]
   end
