@@ -99,6 +99,6 @@ Ensure your device/emulator has audio enabled so you can hear the narrated pages
 
 ---
 
-[▶️ Watch the video demo](app_details/media/demo.mov)
+[▶️ Watch the video demo](app_details/media/demo.gif)
 
 ### Thanks! 🙌
