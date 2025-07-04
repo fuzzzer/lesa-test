@@ -8,29 +8,27 @@
 
 ```mermaid
 flowchart TD
-  subgraph "Runtime Entrypoints"
+  subgraph Entrypoints
     A1[main_development.dart] --> APP
-    A2[main_staging.dart] --> APP
-    A3[main_production.dart] --> APP
-    A4[main.dart] --> APP
+    A2[main_staging.dart]     --> APP
+    A3[main_production.dart]  --> APP
+    A4[main.dart]             --> APP
   end
 
-  APP[App (MaterialApp)] -->|router| ROUTER[LesaRouter]
-  APP -->|theme / localization| CORE[core/]
-  ROUTER -->|"/"| FEATURE[NarratedReading Feature]
+  APP[App] --> ROUTER[LesaRouter]
+  APP --> CORE[Core]
+  ROUTER --> FEATURE[NarratedReading]
 
-  subgraph "CoreModules"
+  subgraph " "
     CORE --> SERVICES[Services]
-    CORE --> CANDY[Candy Tools]
-    CORE --> L10N[Localization]
+    CORE --> L10N[Localisation]
     CORE --> EXT[Extensions]
   end
 
-  FEATURE --> UI[UI layer]
-  FEATURE --> LOGIC[Bloc layer]
-  FEATURE --> REPO[Repository layer]
+  FEATURE --> UI[UI]
+  FEATURE --> LOGIC[Bloc]
+  FEATURE --> REPO[Repository]
   REPO --> MODELS[Models]
-  SERVICES -->|DI| SL[Service Locator]
 ```
 
 - **Feature‑based MVVM/MV*O*** – In the project I used one of the architectures provided by the official [Flutter app architecture docs](https://docs.flutter.dev/app-architecture) but with little tweaks. Each _feature_ owns its UI widgets, blocs, repositories and models.
