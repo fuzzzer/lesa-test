@@ -66,9 +66,9 @@ sequenceDiagram
   Bloc-->>UI: new state (immutable)
 ```
 
-- **Unidirectional flow** keeps side‑effects inside `Bloc`/`Repository`. Widgets are stateless and easy to test.
-- **Service‑locator (GetIt)** is injected where needed, but feature code can also be constructor‑injected (easier for testing),
-  but not needed at the early stages of the project ().
+- **Layered Features** This way I could keep different modules well separated, it made sense since we were working with data parsing. This approach separates concerns of this particular app well, I think even for the upcoming features, since we need to get, modify data that lives in external sources and we need to get all these data to the ui in most immutable and direct way possible, so nothing can go wrong. ui sends events to logic layer, logic layer gets data, translates it to app language, making it type safe to work, and then logic layer provides ready to use state to build the ui accordingly. Widgets stay stateless and easy to test.
+
+- **Service‑locator (GetIt)** is injected where needed, but feature code can also be constructor‑injected (easier for testing). This module probably will become useful, but not at this stage of the project :) .
 
 ---
 
